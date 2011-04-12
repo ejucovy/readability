@@ -6,11 +6,11 @@ var dbg = (typeof console !== 'undefined') ? function(s) {
 } : function() {};
 
 /*
- * Readability. An Arc90 Lab Experiment. 
+ * Readability. An Arc90 Lab Experiment.
  * Website: http://lab.arc90.com/experiments/readability
  * Source:  http://code.google.com/p/arc90labs-readability
  *
- * "Readability" is a trademark of Arc90 Inc and may not be used without explicit permission. 
+ * "Readability" is a trademark of Arc90 Inc and may not be used without explicit permission.
  *
  * Copyright (c) 2010 Arc90 Inc
  * Readability is licensed under the Apache License, Version 2.0.
@@ -38,7 +38,7 @@ var readability = {
     maxPages:    30, /* The maximum number of pages to loop through before we call it quits and just show a link. */
     parsedPages: {}, /* The list of pages we've parsed in this call of readability, for autopaging. As a key store for easier searching. */
     pageETags:   {}, /* A list of the ETag headers of pages we've parsed, in case they happen to match, we'll know it's a duplicate. */
-    
+
     /**
      * All of the regular expressions in use within readability.
      * Defined up here so we don't instantiate them repeatedly in loops.
@@ -63,7 +63,7 @@ var readability = {
 
     /**
      * Runs readability.
-     * 
+     *
      * Workflow:
      *  1. Prep the document by removing script tags, css, etc.
      *  2. Build readability's DOM tree.
@@ -88,7 +88,7 @@ var readability = {
 
         /* Pull out any possible next page link first */
         var nextPageLink = readability.findNextPageLink(document.body);
-        
+
         readability.prepDocument();
 
         /* Build readability's DOM tree */
@@ -173,7 +173,7 @@ var readability = {
         }
 
         if (nextPageLink) {
-            /** 
+            /**
              * Append any additional pages after a small timeout so that people
              * can start reading without having to wait for this to finish processing.
             **/
@@ -195,16 +195,16 @@ var readability = {
                 var windowHeight = window.innerHeight ? window.innerHeight : (document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);
 
                 if(readability.reversePageScroll) {
-                    readability.scrollTo(readability.scrollTop(), readability.scrollTop() - (windowHeight - 50), 20, 10);                   
+                    readability.scrollTo(readability.scrollTop(), readability.scrollTop() - (windowHeight - 50), 20, 10);
                 }
                 else {
-                    readability.scrollTo(readability.scrollTop(), readability.scrollTop() + (windowHeight - 50), 20, 10);                   
+                    readability.scrollTo(readability.scrollTop(), readability.scrollTop() + (windowHeight - 50), 20, 10);
                 }
-                
+
                 return false;
             }
         };
-        
+
         document.onkeyup = function(e) {
             var code = (window.event) ? event.keyCode : e.keyCode;
             if (code === 16) {
@@ -216,7 +216,7 @@ var readability = {
 
     /**
      * Run any post-process modifications to article content as necessary.
-     * 
+     *
      * @param Element
      * @return void
     **/
@@ -242,7 +242,7 @@ var readability = {
 
         for(var i=0, il = images.length; i < il; i+=1) {
             var image = images[i];
-            
+
             if(image.offsetWidth > imageWidthThreshold) {
                 image.className += " blockImage";
             }
@@ -258,11 +258,9 @@ var readability = {
         var articleTools = document.createElement("DIV");
 
         articleTools.id        = "readTools";
-        articleTools.innerHTML = 
+        articleTools.innerHTML =
             "<a href='#' onclick='return window.location.reload()' title='Reload original page' id='reload-page'>Reload Original Page</a>" +
-            "<a href='#' onclick='javascript:window.print();' title='Print page' id='print-page'>Print Page</a>" +
-            "<a href='#' onclick='readability.emailBox(); return false;' title='Email page' id='email-page'>Email Page</a>";
-
+        "<a href='#' onclick='javascript:window.print();' title='Print page' id='print-page'>Print Page</a>";
         return articleTools;
     },
 
@@ -275,13 +273,13 @@ var readability = {
         function sanitizeText() {
             return text.replace(/@\w+/, "");
         }
-        
+
         function countMatches(match) {
             var matches = text.match(new RegExp(match, "g"));
-            return matches !== null ? matches.length : 0; 
+            return matches !== null ? matches.length : 0;
         }
-        
-        function isRTL() {            
+
+        function isRTL() {
             var count_heb =  countMatches("[\\u05B0-\\u05F4\\uFB1D-\\uFBF4]");
             var count_arb =  countMatches("[\\u060C-\\u06FE\\uFB50-\\uFEFC]");
 
@@ -293,7 +291,7 @@ var readability = {
         return isRTL() ? "rtl" : "ltr";
     },
 
-    
+
     /**
      * Get the article title as an H1.
      *
@@ -305,17 +303,17 @@ var readability = {
 
         try {
             curTitle = origTitle = document.title;
-            
+
             if(typeof curTitle !== "string") { /* If they had an element with id "title" in their HTML */
-                curTitle = origTitle = readability.getInnerText(document.getElementsByTagName('title')[0]);             
+                curTitle = origTitle = readability.getInnerText(document.getElementsByTagName('title')[0]);
             }
         }
         catch(e) {}
-        
+
         if(curTitle.match(/ [\|\-] /))
         {
             curTitle = origTitle.replace(/(.*)[\|\-] .*/gi,'$1');
-            
+
             if(curTitle.split(' ').length < 3) {
                 curTitle = origTitle.replace(/[^\|\-]*[\|\-](.*)/gi,'$1');
             }
@@ -342,10 +340,10 @@ var readability = {
         if(curTitle.split(' ').length <= 4) {
             curTitle = origTitle;
         }
-        
+
         var articleTitle = document.createElement("H1");
         articleTitle.innerHTML = curTitle;
-        
+
         return articleTitle;
     },
 
@@ -378,14 +376,14 @@ var readability = {
                  "<span class='version'>Readability version " + readability.version + "</span>",
              "</div>",
         "</div>"].join('');
-                
+
         return articleFooter;
     },
-    
+
     /**
      * Prepare the HTML document for readability to scrape it.
      * This includes things like stripping javascript, CSS, and handling terrible markup.
-     * 
+     *
      * @return void
      **/
     prepDocument: function () {
@@ -397,7 +395,7 @@ var readability = {
         {
             var body = document.createElement("body");
             try {
-                document.body = body;       
+                document.body = body;
             }
             catch(e) {
                 document.documentElement.appendChild(body);
@@ -429,11 +427,11 @@ var readability = {
                     biggestFrameSize         = frameSize;
                     readability.biggestFrame = frames[frameIndex];
                 }
-                
+
                 if(canAccessFrame && frameSize > bestFrameSize)
                 {
                     readability.frameHack = true;
-    
+
                     bestFrame = frames[frameIndex];
                     bestFrameSize = frameSize;
                 }
@@ -445,7 +443,7 @@ var readability = {
                 newBody.innerHTML = bestFrame.contentWindow.document.body.innerHTML;
                 newBody.style.overflow = 'scroll';
                 document.body = newBody;
-                
+
                 var frameset = document.getElementsByTagName('frameset')[0];
                 if(frameset) {
                     frameset.parentNode.removeChild(frameset); }
@@ -479,20 +477,20 @@ var readability = {
     addFootnotes: function(articleContent) {
         var footnotesWrapper = document.getElementById('readability-footnotes'),
             articleFootnotes = document.getElementById('readability-footnotes-list');
-        
+
         if(!footnotesWrapper) {
             footnotesWrapper               = document.createElement("DIV");
             footnotesWrapper.id            = 'readability-footnotes';
             footnotesWrapper.innerHTML     = '<h3>References</h3>';
             footnotesWrapper.style.display = 'none'; /* Until we know we have footnotes, don't show the references block. */
-            
+
             articleFootnotes    = document.createElement('ol');
             articleFootnotes.id = 'readability-footnotes-list';
-            
+
             footnotesWrapper.appendChild(articleFootnotes);
-    
+
             var readFooter = document.getElementById('readFooter');
-            
+
             if(readFooter) {
                 readFooter.parentNode.insertBefore(footnotesWrapper, readFooter);
             }
@@ -508,11 +506,11 @@ var readability = {
                 footnote     = document.createElement('li'),
                 linkDomain   = footnoteLink.host ? footnoteLink.host : document.location.host,
                 linkText     = readability.getInnerText(articleLink);
-            
+
             if(articleLink.className && articleLink.className.indexOf('readability-DoNotFootnote') !== -1 || linkText.match(readability.regexps.skipFootnoteLink)) {
                 continue;
             }
-            
+
             linkCount+=1;
 
             /** Add a superscript reference after the article link */
@@ -520,7 +518,7 @@ var readability = {
             refLink.innerHTML = '<small><sup>[' + linkCount + ']</sup></small>';
             refLink.className = 'readability-DoNotFootnote';
             try { refLink.style.color = 'inherit'; } catch(e) {} /* IE7 doesn't like inherit. */
-            
+
             if(articleLink.parentNode.lastChild === articleLink) {
                 articleLink.parentNode.appendChild(refLink);
             } else {
@@ -534,10 +532,10 @@ var readability = {
 
             footnoteLink.innerHTML  = (footnoteLink.title ? footnoteLink.title : linkText);
             footnoteLink.name       = 'readabilityFootnoteLink-' + linkCount;
-            
+
             footnote.appendChild(footnoteLink);
             footnote.innerHTML = footnote.innerHTML + "<small> (" + linkDomain + ")</small>";
-            
+
             articleFootnotes.appendChild(footnote);
         }
 
@@ -641,20 +639,20 @@ var readability = {
             var imgCount    = articleParagraphs[i].getElementsByTagName('img').length;
             var embedCount  = articleParagraphs[i].getElementsByTagName('embed').length;
             var objectCount = articleParagraphs[i].getElementsByTagName('object').length;
-            
+
             if(imgCount === 0 && embedCount === 0 && objectCount === 0 && readability.getInnerText(articleParagraphs[i], false) === '') {
                 articleParagraphs[i].parentNode.removeChild(articleParagraphs[i]);
             }
         }
 
         try {
-            articleContent.innerHTML = articleContent.innerHTML.replace(/<br[^>]*>\s*<p/gi, '<p');      
+            articleContent.innerHTML = articleContent.innerHTML.replace(/<br[^>]*>\s*<p/gi, '<p');
         }
         catch (e) {
             dbg("Cleaning innerHTML of breaks failed. This is an IE strict-block-elements bug. Ignoring.: " + e);
         }
     },
-    
+
     /**
      * Initialize a node with the readability object. Also checks the
      * className/id for special names to add to its score.
@@ -663,7 +661,7 @@ var readability = {
      * @return void
     **/
     initializeNode: function (node) {
-        node.readability = {"contentScore": 0};         
+        node.readability = {"contentScore": 0};
 
         switch(node.tagName) {
             case 'DIV':
@@ -675,7 +673,7 @@ var readability = {
             case 'BLOCKQUOTE':
                 node.readability.contentScore += 3;
                 break;
-                
+
             case 'ADDRESS':
             case 'OL':
             case 'UL':
@@ -697,10 +695,10 @@ var readability = {
                 node.readability.contentScore -= 5;
                 break;
         }
-       
+
         node.readability.contentScore += readability.getClassWeight(node);
     },
-    
+
     /***
      * grabArticle - Using a variety of metrics (content score, classname, element types), find the content that is
      *               most likely to be the stuff a user wants to read. Then return it wrapped up in a div.
@@ -743,7 +741,7 @@ var readability = {
                     node.parentNode.removeChild(node);
                     nodeIndex-=1;
                     continue;
-                }               
+                }
             }
 
             if (node.tagName === "P" || node.tagName === "TD" || node.tagName === "PRE") {
@@ -755,7 +753,7 @@ var readability = {
                 if (node.innerHTML.search(readability.regexps.divToPElements) === -1) {
                     var newNode = document.createElement('p');
                     try {
-                        newNode.innerHTML = node.innerHTML;             
+                        newNode.innerHTML = node.innerHTML;
                         node.parentNode.replaceChild(newNode, node);
                         nodeIndex-=1;
 
@@ -779,7 +777,7 @@ var readability = {
                         }
                     }
                 }
-            } 
+            }
         }
 
         /**
@@ -821,15 +819,15 @@ var readability = {
 
             /* Add points for any commas within this paragraph */
             contentScore += innerText.split(',').length;
-            
+
             /* For every 100 characters in this paragraph, add another point. Up to 3 points. */
             contentScore += Math.min(Math.floor(innerText.length / 100), 3);
-            
+
             /* Add the score to the parent. The grandparent gets half. */
             parentNode.readability.contentScore += contentScore;
 
             if(grandParentNode) {
-                grandParentNode.readability.contentScore += contentScore/2;             
+                grandParentNode.readability.contentScore += contentScore/2;
             }
         }
 
@@ -907,12 +905,12 @@ var readability = {
             {
                 append = true;
             }
-            
+
             if(siblingNode.nodeName === "P") {
                 var linkDensity = readability.getLinkDensity(siblingNode);
                 var nodeContent = readability.getInnerText(siblingNode);
                 var nodeLength  = nodeContent.length;
-                
+
                 if(nodeLength > 80 && linkDensity < 0.25)
                 {
                     append = true;
@@ -929,7 +927,7 @@ var readability = {
                 var nodeToAppend = null;
                 if(siblingNode.nodeName !== "DIV" && siblingNode.nodeName !== "P") {
                     /* We have a node that isn't a common block level element, like a form or td tag. Turn it into a div so it doesn't get filtered out later by accident. */
-                    
+
                     dbg("Altering siblingNode of " + siblingNode.nodeName + ' to div.');
                     nodeToAppend = document.createElement("DIV");
                     try {
@@ -947,7 +945,7 @@ var readability = {
                     s-=1;
                     sl-=1;
                 }
-                
+
                 /* To ensure a node does not interfere with readability styles, remove its classnames */
                 nodeToAppend.className = "";
 
@@ -989,10 +987,10 @@ var readability = {
                 return null;
             }
         }
-        
+
         return articleContent;
     },
-    
+
     /**
      * Removes script tags from the document.
      *
@@ -1007,12 +1005,12 @@ var readability = {
                 scripts[i].nodeValue="";
                 scripts[i].removeAttribute('src');
                 if (scripts[i].parentNode) {
-                        scripts[i].parentNode.removeChild(scripts[i]);          
+                        scripts[i].parentNode.removeChild(scripts[i]);
                 }
             }
         }
     },
-    
+
     /**
      * Get the inner text of a node - cross browser compatibly.
      * This also strips out any excess whitespace to be found.
@@ -1075,18 +1073,18 @@ var readability = {
             if ( cur.nodeType === 1 ) {
                 // Remove style attribute(s) :
                 if(cur.className !== "readability-styled") {
-                    cur.removeAttribute("style");                   
+                    cur.removeAttribute("style");
                 }
                 readability.cleanStyles( cur );
             }
             cur = cur.nextSibling;
-        }           
+        }
     },
-    
+
     /**
      * Get the density of links as a percentage of the content
      * This is the amount of text that is inside a link divided by the total text in the node.
-     * 
+     *
      * @param Element
      * @return number (float)
     **/
@@ -1097,11 +1095,11 @@ var readability = {
         for(var i=0, il=links.length; i<il;i+=1)
         {
             linkLength += readability.getInnerText(links[i]).length;
-        }       
+        }
 
         return linkLength / textLength;
     },
-    
+
     /**
      * Find a cleaned up version of the current URL, to use for comparing links for possible next-pageyness.
      *
@@ -1123,10 +1121,10 @@ var readability = {
 
                 /* If the type isn't alpha-only, it's probably not actually a file extension. */
                 if(!possibleType.match(/[^a-zA-Z]/)) {
-                    segment = segment.split(".")[0];                    
+                    segment = segment.split(".")[0];
                 }
             }
-            
+
             /**
              * EW-CMS specific segment replacement. Ugly.
              * Example: http://www.ew.com/ew/article/0,,20313460_20369436,00.html
@@ -1147,7 +1145,7 @@ var readability = {
             if (i < 2 && segment.match(/^\d{1,2}$/)) {
                 del = true;
             }
-            
+
             /* If this is the first segment and it's just "index", remove it. */
             if(i === 0 && segment.toLowerCase() === "index") {
                 del = true;
@@ -1170,7 +1168,7 @@ var readability = {
 
     /**
      * Look for any paging links that may occur within the document.
-     * 
+     *
      * @param body
      * @return object (array)
     **/
@@ -1186,7 +1184,7 @@ var readability = {
          *
          * Also possible: levenshtein distance? longest common subsequence?
          *
-         * After we do that, assign each page a score, and 
+         * After we do that, assign each page a score, and
         **/
         for(var i = 0, il = allLinks.length; i < il; i+=1) {
             var link     = allLinks[i],
@@ -1196,12 +1194,12 @@ var readability = {
             if(linkHref === "" || linkHref === articleBaseUrl || linkHref === window.location.href || linkHref in readability.parsedPages) {
                 continue;
             }
-            
+
             /* If it's on a different domain, skip it. */
             if(window.location.host !== linkHref.split(/\/+/g)[1]) {
                 continue;
             }
-            
+
             var linkText = readability.getInnerText(link);
 
             /* If the linkText looks like it's not the next page, skip it. */
@@ -1214,9 +1212,9 @@ var readability = {
             if(!linkHrefLeftover.match(/\d/)) {
                 continue;
             }
-            
+
             if(!(linkHref in possiblePages)) {
-                possiblePages[linkHref] = {"score": 0, "linkText": linkText, "href": linkHref};             
+                possiblePages[linkHref] = {"score": 0, "linkText": linkText, "href": linkHref};
             } else {
                 possiblePages[linkHref].linkText += ' | ' + linkText;
             }
@@ -1238,7 +1236,7 @@ var readability = {
             if(linkData.match(/pag(e|ing|inat)/i)) {
                 linkObj.score += 25;
             }
-            if(linkData.match(/(first|last)/i)) { // -65 is enough to negate any bonuses gotten from a > or » in the text, 
+            if(linkData.match(/(first|last)/i)) { // -65 is enough to negate any bonuses gotten from a > or » in the text,
                 /* If we already matched on "next", last is probably fine. If we didn't, then it's bad. Penalize. */
                 if(!linkObj.linkText.match(readability.regexps.nextLink)) {
                     linkObj.score -= 65;
@@ -1265,10 +1263,10 @@ var readability = {
                     /* If this is just something like "footer", give it a negative. If it's something like "body-and-footer", leave it be. */
                     if(!parentNodeClassAndId.match(readability.regexps.positive)) {
                         linkObj.score -= 25;
-                        negativeNodeMatch = true;                       
+                        negativeNodeMatch = true;
                     }
                 }
-                
+
                 parentNode = parentNode.parentNode;
             }
 
@@ -1330,7 +1328,7 @@ var readability = {
 
             dbg('NEXT PAGE IS ' + nextHref);
             readability.parsedPages[nextHref] = true;
-            return nextHref;            
+            return nextHref;
         }
         else {
             return null;
@@ -1376,7 +1374,7 @@ var readability = {
         if (typeof options === 'undefined') { options = {}; }
 
         request.onreadystatechange = respondToReadyState;
-        
+
         request.open('get', url, true);
         request.setRequestHeader('Accept', 'text/html');
 
@@ -1411,7 +1409,7 @@ var readability = {
             articlePage.innerHTML = articlePage.innerHTML + nextPageMarkup;
             return;
         }
-        
+
         /**
          * Now that we've built the article page DOM element, get the page content
          * asynchronously and load the cleaned content into the div we created for it.
@@ -1429,7 +1427,7 @@ var readability = {
                             return;
                         } else {
                             readability.pageETags[eTag] = 1;
-                        }                       
+                        }
                     }
 
                     // TODO: this ends up doubling up page numbers on NYTimes articles. Need to generically parse those away.
@@ -1447,7 +1445,7 @@ var readability = {
                     responseHtml = responseHtml.replace(/\uffff/g,'\n').replace(/<(\/?)noscript/gi, '<$1div');
                     responseHtml = responseHtml.replace(readability.regexps.replaceBrs, '</p><p>');
                     responseHtml = responseHtml.replace(readability.regexps.replaceFonts, '<$1span>');
-                    
+
                     page.innerHTML = responseHtml;
 
                     /**
@@ -1480,7 +1478,7 @@ var readability = {
                             }
                         }
                     }
-                    
+
                     readability.removeScripts(content);
 
                     thisPage.innerHTML = thisPage.innerHTML + content.innerHTML;
@@ -1502,9 +1500,9 @@ var readability = {
             });
         }(nextPageLink, articlePage));
     },
-    
+
     /**
-     * Get an elements class/id weight. Uses regular expressions to tell if this 
+     * Get an elements class/id weight. Uses regular expressions to tell if this
      * element looks good or bad.
      *
      * @param Element
@@ -1552,7 +1550,7 @@ var readability = {
      **/
     killBreaks: function (e) {
         try {
-            e.innerHTML = e.innerHTML.replace(readability.regexps.killBreaks,'<br />');       
+            e.innerHTML = e.innerHTML.replace(readability.regexps.killBreaks,'<br />');
         }
         catch (eBreaks) {
             dbg("KillBreaks failed - this is an IE bug. Ignoring.: " + eBreaks);
@@ -1570,7 +1568,7 @@ var readability = {
     clean: function (e, tag) {
         var targetList = e.getElementsByTagName( tag );
         var isEmbed    = (tag === 'object' || tag === 'embed');
-        
+
         for (var y=targetList.length-1; y >= 0; y-=1) {
             /* Allow youtube and vimeo videos through as people usually want to see those. */
             if(isEmbed) {
@@ -1578,7 +1576,7 @@ var readability = {
                 for (var i=0, il=targetList[y].attributes.length; i < il; i+=1) {
                     attributeValues += targetList[y].attributes[i].value + '|';
                 }
-                
+
                 /* First, check the elements attributes to see if any of them contain youtube or vimeo */
                 if (attributeValues.search(readability.regexps.videos) !== -1) {
                     continue;
@@ -1588,13 +1586,13 @@ var readability = {
                 if (targetList[y].innerHTML.search(readability.regexps.videos) !== -1) {
                     continue;
                 }
-                
+
             }
 
             targetList[y].parentNode.removeChild(targetList[y]);
         }
     },
-    
+
     /**
      * Clean an element of all tags of type "tag" if they look fishy.
      * "Fishy" is an algorithm based on content length, classnames, link density, number of images & embeds, etc.
@@ -1619,7 +1617,7 @@ var readability = {
         for (var i=curTagsLength-1; i >= 0; i-=1) {
             var weight = readability.getClassWeight(tagsList[i]);
             var contentScore = (typeof tagsList[i].readability !== 'undefined') ? tagsList[i].readability.contentScore : 0;
-            
+
             dbg("Cleaning Conditionally " + tagsList[i] + " (" + tagsList[i].className + ":" + tagsList[i].id + ")" + ((typeof tagsList[i].readability !== 'undefined') ? (" with score " + tagsList[i].readability.contentScore) : ''));
 
             if(weight+contentScore < 0)
@@ -1640,7 +1638,7 @@ var readability = {
                 var embeds     = tagsList[i].getElementsByTagName("embed");
                 for(var ei=0,il=embeds.length; ei < il; ei+=1) {
                     if (embeds[ei].src.search(readability.regexps.videos) === -1) {
-                      embedCount+=1; 
+                      embedCount+=1;
                     }
                 }
 
@@ -1653,7 +1651,7 @@ var readability = {
                 } else if(li > p && tag !== "ul" && tag !== "ol") {
                     toRemove = true;
                 } else if( input > Math.floor(p/3) ) {
-                    toRemove = true; 
+                    toRemove = true;
                 } else if(contentLength < 25 && (img === 0 || img > 2) ) {
                     toRemove = true;
                 } else if(weight < 25 && linkDensity > 0.2) {
@@ -1689,22 +1687,22 @@ var readability = {
     },
 
     /*** Smooth scrolling logic ***/
-    
+
     /**
      * easeInOut animation algorithm - returns an integer that says how far to move at this point in the animation.
      * Borrowed from jQuery's easing library.
      * @return integer
     **/
-    easeInOut: function(start,end,totalSteps,actualStep) { 
-        var delta = end - start; 
+    easeInOut: function(start,end,totalSteps,actualStep) {
+        var delta = end - start;
 
-        if ((actualStep/=totalSteps/2) < 1) { 
+        if ((actualStep/=totalSteps/2) < 1) {
             return delta/2*actualStep*actualStep + start;
         }
         actualStep -=1;
         return -delta/2 * ((actualStep)*(actualStep-2) - 1) + start;
     },
-    
+
     /**
      * Helper function to, in a cross compatible way, get or set the current scroll offset of the document.
      * @return mixed integer on get, the result of window.scrollTo on set
@@ -1725,7 +1723,7 @@ var readability = {
             return document.body.scrollTop;
         }
     },
-    
+
     /**
      * scrollTo - Smooth scroll to the point of scrollEnd in the document.
      * @return void
@@ -1742,7 +1740,7 @@ var readability = {
             }
 
             var oldScrollTop = readability.scrollTop();
-            
+
             readability.scrollTop(readability.easeInOut(scrollStart, scrollEnd, steps, readability.curScrollStep));
 
             // We're at the end of the window.
@@ -1756,7 +1754,7 @@ var readability = {
         }
     },
 
-    
+
     /**
      * Show the email popup.
      *
@@ -1773,9 +1771,9 @@ var readability = {
         emailContainer.setAttribute('id', 'email-container');
         emailContainer.innerHTML = '<iframe src="'+readability.emailSrc + '?pageUrl='+encodeURIComponent(window.location)+'&pageTitle='+encodeURIComponent(document.title)+'" scrolling="no" onload="readability.removeFrame()" style="width:500px; height: 490px; border: 0;"></iframe>';
 
-        document.body.appendChild(emailContainer);          
+        document.body.appendChild(emailContainer);
     },
-    
+
     /**
      * Close the email popup. This is a hacktackular way to check if we're in a "close loop".
      * Since we don't have crossdomain access to the frame, we can only know when it has
@@ -1793,9 +1791,9 @@ var readability = {
             }
 
             readability.iframeLoads = 0;
-        }           
+        }
     },
-    
+
     htmlspecialchars: function (s) {
         if (typeof(s) === "string") {
             s = s.replace(/&/g, "&amp;");
@@ -1804,22 +1802,22 @@ var readability = {
             s = s.replace(/</g, "&lt;");
             s = s.replace(/>/g, "&gt;");
         }
-    
+
         return s;
     },
 
     flagIsActive: function(flag) {
         return (readability.flags & flag) > 0;
     },
-    
+
     addFlag: function(flag) {
         readability.flags = readability.flags | flag;
     },
-    
+
     removeFlag: function(flag) {
         readability.flags = readability.flags & ~flag;
     }
-    
+
 };
 
 readability.init();
