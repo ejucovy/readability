@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* Document */
 body{font-size:10px;line-height:1;}
-#readability-logo,#arc90-logo,.footer-twitterLink,#readTools a,a.rdbTK-powered span{background-color:transparent!important;background-image:url(http://lab.arc90.com/experiments/readability/images/sprite-readability.png)!important;background-repeat:no-repeat!important;}
+#readability-logo,#arc90-logo,.footer-twitterLink,#readTools a,a.rdbTK-powered span{background-color:transparent!important;background-image:url(http://ejucovy.github.io/readability/images/sprite-readability.png)!important;background-repeat:no-repeat!important;}
 #readOverlay{text-rendering:optimizeLegibility;display:block;position:absolute;top:0;left:0;width:100%;}
 #readInner{max-width:800px;margin:1em auto;}
 #readInner a{color:#039;text-decoration:none;}
